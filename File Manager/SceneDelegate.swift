@@ -13,18 +13,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let windowScene = scene as? UIWindowScene else { return }
+
         let window = UIWindow(windowScene: windowScene)
-        
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileService = FileManagerService()
-        let rootVC = DirectoryViewController(directoryURL: documentsURL, fileManagerService: fileService)
-        
-        let navController = UINavigationController(rootViewController: rootVC)
-        window.rootViewController = navController
-        self.window = window
+
+        let fileManagerService = FileManagerService()
+        let keychainService = KeychainService()
+        let passwordVC = PasswordViewController(keychainService: keychainService)
+
+
+        window.rootViewController = passwordVC
         window.makeKeyAndVisible()
+
+        self.window = window
     }
+
+
 
 
     func sceneDidDisconnect(_ scene: UIScene) {
